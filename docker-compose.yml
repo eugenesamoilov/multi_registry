@@ -1,0 +1,20 @@
+version: '3'
+services:
+#MULTI REGISTRY
+  registry:
+    container_name: multi_registry
+    image: rpardini/docker-registry-proxy:0.2.4
+    #build: ./build
+    restart: always
+    ports:
+      - "3128:3128"
+    environment:
+      - LANG=en_US.UTF-8                                                                                          
+      - REGISTRIES= k8s.gcr.io gcr.io docker.io quay.io mcr.microsoft.com
+      #- AUTH_REGISTRIES="some.authenticated.registry:oneuser:onepassword another.registry:user:password"
+      - VERIFY_SSL="true"
+      - DEBUG="false"
+      - DEBUG_NGINX="false" 
+    volumes:
+      - ./docker_mirror_cache:/docker_mirror_cache
+      - ./docker_mirror_certs:/ca
